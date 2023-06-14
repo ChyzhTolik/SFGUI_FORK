@@ -39,13 +39,13 @@ const sf::FloatRect Scale::GetSliderRect() const {
 		auto slider_x = (GetAllocation().width - slider_length) * (current_value - adjustment->GetLower()) / value_range;
 		auto slider_y = (GetAllocation().height - slider_width) / 2.f;
 
-		return sf::FloatRect( slider_x, slider_y, slider_length, slider_width );
+		return sf::FloatRect({ slider_x, slider_y }, { slider_length, slider_width });
 	}
 
 	auto slider_x = (GetAllocation().width - slider_width) / 2.f;
 	auto slider_y = (GetAllocation().height - slider_length) * (1 - ((current_value - adjustment->GetLower()) / value_range));
 
-	return sf::FloatRect( slider_x, slider_y, slider_width, slider_length );
+	return sf::FloatRect({ slider_x, slider_y }, { slider_width, slider_length });
 }
 
 
@@ -74,12 +74,12 @@ void Scale::HandleMouseButtonEvent( sf::Mouse::Button button, bool press, int x,
 		m_dragging = false;
 	}
 
-	if( !GetAllocation().contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+	if (!GetAllocation().contains({ static_cast<float>(x), static_cast<float>(y) })) {
 		return;
 	}
 
 	if( press ) {
-		if( !GetSliderRect().contains( static_cast<float>( x ) - GetAllocation().left, static_cast<float>( y ) - GetAllocation().top ) ) {
+		if (!GetSliderRect().contains({ static_cast<float>(x) - GetAllocation().left, static_cast<float>(y) - GetAllocation().top })) {
 			Adjustment::Ptr adjustment( GetAdjustment() );
 
 			auto minor_step = adjustment->GetMinorStep();

@@ -381,7 +381,7 @@ class SFGUI_API Widget : public Object, public std::enable_shared_from_this<Widg
 		/** Handle text event.
 		 * @param character Character.
 		 */
-		virtual void HandleTextEvent( sf::Uint32 character );
+		virtual void HandleTextEvent( std::uint32_t character );
 
 		/** Handle mouse enter.
 		 * @param x Mouse X position.

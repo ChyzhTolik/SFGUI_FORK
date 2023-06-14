@@ -63,8 +63,8 @@ std::unique_ptr<RenderQueue> BREW::CreateFrameDrawable( std::shared_ptr<const Fr
 		label_start_x = padding + ( alignment * ( frame->GetAllocation().width - 2.f * padding - metrics.x ) );
 		label_end_x = label_start_x + metrics.x;
 
-		sf::Text text( frame->GetLabel(), *font, font_size );
-		text.setPosition( label_start_x + label_padding, border_width / 2.f );
+		sf::Text text( *font, frame->GetLabel(), font_size );
+		text.setPosition({ label_start_x + label_padding, border_width / 2.f });
 		text.setFillColor( color );
 		queue->Add( Renderer::Get().CreateText( text ) );
 	}

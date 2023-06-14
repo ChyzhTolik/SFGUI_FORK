@@ -75,18 +75,18 @@ std::unique_ptr<RenderQueue> BREW::CreateComboBoxDrawable( std::shared_ptr<const
 				queue->Add(
 					Renderer::Get().CreateRect(
 						sf::FloatRect(
-							item_position.x + border_width,
-							item_position.y + border_width,
-							item_size.x,
-							item_size.y - 2.f * border_width
+							{ item_position.x + border_width,
+							item_position.y + border_width },
+							{ item_size.x,
+							item_size.y - 2.f * border_width }
 						),
 						highlighted_color
 					)
 				);
 			}
 
-			sf::Text text( combo_box->GetItem( item_index ), *font, font_size );
-			text.setPosition( item_position.x + padding, item_position.y + padding );
+			sf::Text text( *font, combo_box->GetItem( item_index ), font_size );
+			text.setPosition({ item_position.x + padding, item_position.y + padding });
 			text.setFillColor( color );
 			queue->Add( Renderer::Get().CreateText( text ) );
 
@@ -95,10 +95,10 @@ std::unique_ptr<RenderQueue> BREW::CreateComboBoxDrawable( std::shared_ptr<const
 	}
 
 	if( combo_box->GetSelectedItem() != ComboBox::NONE ) {
-		sf::Text text( combo_box->GetSelectedText(), *font, font_size );
+		sf::Text text( *font, combo_box->GetSelectedText(), font_size );
 		text.setPosition(
-			border_width + padding,
-			combo_box->GetAllocation().height / 2.f - line_height / 2.f
+			{ border_width + padding,
+			combo_box->GetAllocation().height / 2.f - line_height / 2.f }
 		);
 		text.setFillColor( color );
 		queue->Add( Renderer::Get().CreateText( text ) );

@@ -63,7 +63,7 @@ void Entry::SetCursorPosition( int new_position ) {
 	MoveCursor( delta );
 }
 
-void Entry::HideText( sf::Uint32 c ) {
+void Entry::HideText( std::uint32_t c ) {
 	if( c == 0x00 || ( c > 0x1f && c != 0x7f ) ) {
 		// not a control character
 		m_text_placeholder = c;
@@ -71,7 +71,7 @@ void Entry::HideText( sf::Uint32 c ) {
 	}
 }
 
-sf::Uint32 Entry::GetHideCharacter() const {
+std::uint32_t Entry::GetHideCharacter() const {
 	return m_text_placeholder;
 }
 
@@ -81,7 +81,7 @@ int Entry::GetPositionFromMouseX( int mouse_pos_x ) {
 	const sf::Font& font( *Context::Get().GetEngine().GetResourceManager().GetFont( font_name ) );
 	float text_padding( Context::Get().GetEngine().GetProperty<float>( "Padding", shared_from_this() ) );
 
-	std::basic_string<sf::Uint32> string( m_visible_string.begin(), m_visible_string.end() );
+	std::basic_string<std::uint32_t> string( m_visible_string.begin(), m_visible_string.end() );
 
 	auto text_start = GetAllocation().left + text_padding;
 	auto last_delta = std::fabs( text_start - static_cast<float>( mouse_pos_x ) );
@@ -115,7 +115,7 @@ void Entry::RecalculateVisibleString() const {
 		return;
 	}
 
-	std::basic_string<sf::Uint32> string( m_string.begin(), m_string.end() );
+	std::u32string string( m_string.begin(), m_string.end() );
 	string.erase( 0, static_cast<std::size_t>( m_visible_offset ) );
 
 	if( m_text_placeholder != 0 ) {
@@ -159,14 +159,14 @@ void Entry::MoveCursor( int delta ) {
 	}
 }
 
-void Entry::HandleTextEvent( sf::Uint32 character ) {
+void Entry::HandleTextEvent(std::uint32_t character ) {
 	if( m_max_length > 0 && static_cast<int>( m_string.getSize() ) >= m_max_length ) {
 		return;
 	}
 
 	if( character > 0x1f && character != 0x7f ) {
 		// not a control character
-		m_string.insert( static_cast<std::size_t>( m_cursor_position ), character );
+		m_string.insert( static_cast<std::size_t>( m_cursor_position ), sf::String(static_cast<char32_t>(character)) );
 		MoveCursor( 1 );
 
 		GetSignals().Emit( OnTextChanged );
@@ -179,7 +179,7 @@ void Entry::HandleKeyEvent( sf::Keyboard::Key key, bool press ) {
 	}
 
 	switch( key ) {
-	case sf::Keyboard::BackSpace: { // backspace
+	case sf::Keyboard::Backspace: { // backspace
 		if( ( m_string.getSize() > 0 ) && ( m_cursor_position > 0 ) ) {
 			m_string.erase( static_cast<std::size_t>( m_cursor_position - 1 ) );
 

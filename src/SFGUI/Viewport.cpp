@@ -84,7 +84,7 @@ void Viewport::HandleEvent( const sf::Event& event ) {
 		switch( event.type ) {
 		case sf::Event::MouseButtonPressed:
 		case sf::Event::MouseButtonReleased: { // All MouseButton events
-			if( !GetAllocation().contains( static_cast<float>( event.mouseButton.x ), static_cast<float>( event.mouseButton.y ) ) ) {
+			if (!GetAllocation().contains({ static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y) })) {
 				break;
 			}
 
@@ -104,7 +104,7 @@ void Viewport::HandleEvent( const sf::Event& event ) {
 		} break;
 		case sf::Event::MouseMoved: { // All MouseMove events
 			sf::Event altered_event( event );
-			if( !GetAllocation().contains( static_cast<float>( event.mouseMove.x ), static_cast<float>( event.mouseMove.y ) ) ) {
+			if (!GetAllocation().contains({ static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y) })) {
 				// Nice hack to cause scrolledwindow children to get out of
 				// prelight state when the mouse leaves the child allocation.
 				altered_event.mouseMove.x = -1;
@@ -116,14 +116,14 @@ void Viewport::HandleEvent( const sf::Event& event ) {
 			}
 			GetChild()->HandleEvent( altered_event );
 		} break;
-		case sf::Event::MouseWheelMoved: { // All MouseWheel events
-			if( !GetAllocation().contains( static_cast<float>( event.mouseWheel.x ), static_cast<float>( event.mouseWheel.y ) ) ) {
+		case sf::Event::MouseWheelScrolled: { // All MouseWheel events
+			if (!GetAllocation().contains({ static_cast<float>(event.mouseWheelScroll.x), static_cast<float>(event.mouseWheelScroll.y) })) {
 				break;
 			}
 
 			sf::Event altered_event( event );
-			altered_event.mouseWheel.x += static_cast<int>( offset_x );
-			altered_event.mouseWheel.y += static_cast<int>( offset_y );
+			altered_event.mouseWheelScroll.x += static_cast<int>( offset_x );
+			altered_event.mouseWheelScroll.y += static_cast<int>( offset_y );
 
 			GetChild()->HandleEvent( altered_event );
 		} break;

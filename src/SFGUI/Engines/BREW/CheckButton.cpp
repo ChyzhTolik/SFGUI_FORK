@@ -42,10 +42,10 @@ std::unique_ptr<RenderQueue> BREW::CreateCheckButtonDrawable( std::shared_ptr<co
 		queue->Add(
 			Renderer::Get().CreateRect(
 				sf::FloatRect(
-					box_size / 2 - check_size / 2,
-					check->GetAllocation().height / 2.f - box_size / 2.f + diff / 2.f,
-					check_size - 1.f,
-					check_size - 1.f
+					{ box_size / 2 - check_size / 2,
+					check->GetAllocation().height / 2.f - box_size / 2.f + diff / 2.f },
+					{ check_size - 1.f,
+					check_size - 1.f }
 				),
 				check_color
 			)
@@ -57,10 +57,10 @@ std::unique_ptr<RenderQueue> BREW::CreateCheckButtonDrawable( std::shared_ptr<co
 		auto metrics = GetTextStringMetrics( check->GetLabel(), *font, font_size );
 		metrics.y = GetFontLineHeight( *font, font_size );
 
-		sf::Text text( check->GetLabel(), *font, font_size );
+		sf::Text text( *font, check->GetLabel(), font_size );
 		text.setPosition(
-			box_size + spacing,
-			check->GetAllocation().height / 2.f - metrics.y / 2.f
+			{ box_size + spacing,
+			check->GetAllocation().height / 2.f - metrics.y / 2.f }
 		);
 		text.setFillColor( color );
 		queue->Add( Renderer::Get().CreateText( text ) );

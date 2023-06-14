@@ -91,7 +91,7 @@ void SpinButton::HandleMouseButtonEvent( sf::Mouse::Button button, bool press, i
 		rect.width = stepper_width;
 		rect.height = stepper_height;
 
-		if( rect.contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+		if (rect.contains({ static_cast<float>(x), static_cast<float>(y) })) {
 			GrabFocus( Widget::Ptr() );
 
 			m_adjustment->Increment();
@@ -107,7 +107,7 @@ void SpinButton::HandleMouseButtonEvent( sf::Mouse::Button button, bool press, i
 		// Bottom stepper.
 		rect.top = GetAllocation().top + border_width + stepper_height;
 
-		if( rect.contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+		if (rect.contains({ static_cast<float>(x), static_cast<float>(y) })) {
 			GrabFocus( Widget::Ptr() );
 
 			m_adjustment->Decrement();
@@ -144,7 +144,7 @@ void SpinButton::HandleUpdate( float seconds ) {
 	}
 
 	if( m_repeat_wait ) {
-		sf::Uint32 stepper_repeat_delay( Context::Get().GetEngine().GetProperty<sf::Uint32>( "StepperRepeatDelay", shared_from_this() ) );
+		std::uint32_t stepper_repeat_delay( Context::Get().GetEngine().GetProperty<std::uint32_t>( "StepperRepeatDelay", shared_from_this() ) );
 
 		if( m_elapsed_time < ( static_cast<float>( stepper_repeat_delay ) / 1000.f ) ) {
 			return;
@@ -166,7 +166,7 @@ void SpinButton::HandleUpdate( float seconds ) {
 	}
 }
 
-void SpinButton::HandleTextEvent( sf::Uint32 character ) {
+void SpinButton::HandleTextEvent(std::uint32_t character ) {
 	if( isdigit( static_cast<int>( character ) ) ) {
 		Entry::HandleTextEvent( character );
 		return;
@@ -190,7 +190,7 @@ void SpinButton::HandleKeyEvent( sf::Keyboard::Key key, bool press ) {
 		return;
 	}
 
-	if( key == sf::Keyboard::Return ) {
+	if( key == sf::Keyboard::Enter ) {
 		GrabFocus( Widget::Ptr() );
 	}
 }

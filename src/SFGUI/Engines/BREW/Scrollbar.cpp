@@ -27,10 +27,10 @@ std::unique_ptr<RenderQueue> BREW::CreateScrollbarDrawable( std::shared_ptr<cons
 		queue->Add(
 			Renderer::Get().CreateRect(
 				sf::FloatRect(
-					stepper_length,
-					0.f,
-					scrollbar->GetAllocation().width - 2.f * stepper_length,
-					scrollbar->GetAllocation().height
+					{ stepper_length,
+					0.f },
+					{ scrollbar->GetAllocation().width - 2.f * stepper_length,
+					scrollbar->GetAllocation().height }
 				),
 				trough_color
 			)
@@ -40,10 +40,10 @@ std::unique_ptr<RenderQueue> BREW::CreateScrollbarDrawable( std::shared_ptr<cons
 		queue->Add(
 			CreateStepper(
 				sf::FloatRect(
-					0.f,
-					0.f,
-					stepper_length,
-					scrollbar->GetAllocation().height
+					{ 0.f,
+					0.f },
+					{ stepper_length,
+					scrollbar->GetAllocation().height }
 				),
 				stepper_color,
 				border_width,
@@ -66,10 +66,10 @@ std::unique_ptr<RenderQueue> BREW::CreateScrollbarDrawable( std::shared_ptr<cons
 		queue->Add(
 			CreateStepper(
 				sf::FloatRect(
-					scrollbar->GetAllocation().width - stepper_length,
-					0.f,
-					stepper_length,
-					scrollbar->GetAllocation().height
+					{ scrollbar->GetAllocation().width - stepper_length,
+					0.f },
+					{ stepper_length,
+					scrollbar->GetAllocation().height }
 				),
 				stepper_color,
 				border_width,
@@ -95,10 +95,10 @@ std::unique_ptr<RenderQueue> BREW::CreateScrollbarDrawable( std::shared_ptr<cons
 		queue->Add(
 			Renderer::Get().CreateRect(
 				sf::FloatRect(
-					0.f,
-					stepper_length,
-					scrollbar->GetAllocation().width,
-					scrollbar->GetAllocation().height - 2.f * stepper_length
+					{ 0.f,
+					stepper_length },
+					{ scrollbar->GetAllocation().width,
+					scrollbar->GetAllocation().height - 2.f * stepper_length }
 				),
 				trough_color
 			)
@@ -108,10 +108,10 @@ std::unique_ptr<RenderQueue> BREW::CreateScrollbarDrawable( std::shared_ptr<cons
 		queue->Add(
 			CreateStepper(
 				sf::FloatRect(
-					0.f,
-					0.f,
-					scrollbar->GetAllocation().width,
-					stepper_length
+					{ 0.f,
+					0.f },
+					{ scrollbar->GetAllocation().width,
+					stepper_length }
 				),
 				stepper_color,
 				border_width,
@@ -134,10 +134,10 @@ std::unique_ptr<RenderQueue> BREW::CreateScrollbarDrawable( std::shared_ptr<cons
 		queue->Add(
 			CreateStepper(
 				sf::FloatRect(
-					0.f,
-					scrollbar->GetAllocation().height - stepper_length,
-					scrollbar->GetAllocation().width,
-					stepper_length
+					{ 0.f,
+					scrollbar->GetAllocation().height - stepper_length },
+					{ scrollbar->GetAllocation().width,
+					stepper_length }
 				),
 				stepper_color,
 				border_width,

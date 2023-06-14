@@ -4,6 +4,7 @@
 #include <SFGUI/RenderQueue.hpp>
 
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Font.hpp>
 
 #include <cmath>
 
@@ -20,7 +21,7 @@ std::unique_ptr<RenderQueue> BREW::CreateWindowDrawable( std::shared_ptr<const W
 	auto title_padding = GetProperty<float>( "TitlePadding", window );
 	auto shadow_distance = GetProperty<float>( "ShadowDistance", window );
 	auto handle_size = GetProperty<float>( "HandleSize", window );
-	auto shadow_alpha = GetProperty<sf::Uint8>( "ShadowAlpha", window );
+	auto shadow_alpha = GetProperty<std::uint8_t>( "ShadowAlpha", window );
 	auto title_font_size = GetProperty<unsigned int>( "FontSize", window );
 	auto close_height = GetProperty<float>( "CloseHeight", window );
 	auto close_thickness = GetProperty<float>( "CloseThickness", window );
@@ -36,10 +37,10 @@ std::unique_ptr<RenderQueue> BREW::CreateWindowDrawable( std::shared_ptr<const W
 		sf::Color shadow_color( 0, 0, 0, shadow_alpha );
 
 		sf::FloatRect shadow_rect(
-			shadow_distance,
-			shadow_distance,
-			window->GetAllocation().width,
-			window->GetAllocation().height
+			{ shadow_distance,
+			shadow_distance },
+			{ window->GetAllocation().width,
+			window->GetAllocation().height }
 		);
 
 		queue->Add(
@@ -84,10 +85,10 @@ std::unique_ptr<RenderQueue> BREW::CreateWindowDrawable( std::shared_ptr<const W
 		queue->Add(
 			Renderer::Get().CreateRect(
 				sf::FloatRect(
-					border_width + .1f,
-					border_width + .1f,
-					window->GetAllocation().width - 2 * border_width,
-					title_size
+					{ border_width + .1f,
+					border_width + .1f },
+					{ window->GetAllocation().width - 2 * border_width,
+					title_size }
 				),
 				title_background_color
 			)
@@ -131,10 +132,10 @@ std::unique_ptr<RenderQueue> BREW::CreateWindowDrawable( std::shared_ptr<const W
 		// Find out visible text, count in "...".
 		float avail_width( window->GetAllocation().width - 2.f * border_width - 2.f * title_padding - ( window->HasStyle( Window::CLOSE ) ? title_size : 0 ) );
 
-		sf::Text title_text( window->GetTitle(), *title_font, title_font_size );
+		sf::Text title_text( *title_font, window->GetTitle(), title_font_size );
 
 		if( title_text.getLocalBounds().width > avail_width ) {
-			sf::Text dots( "...", *title_font, title_font_size );
+			sf::Text dots( *title_font, "...", title_font_size );
 			const sf::String& title_string( window->GetTitle() );
 			sf::String visible_title;
 

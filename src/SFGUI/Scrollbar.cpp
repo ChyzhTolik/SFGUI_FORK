@@ -53,7 +53,7 @@ const sf::FloatRect Scrollbar::GetSliderRect() const {
 			slider_x = stepper_length + ( trough_length - slider_length ) * ( adjustment->GetValue() - adjustment->GetLower() ) / value_range;
 		}
 
-		return sf::FloatRect( slider_x, slider_y, slider_length, GetAllocation().height );
+		return sf::FloatRect({ slider_x, slider_y }, { slider_length, GetAllocation().height });
 	}
 
 	auto stepper_length = GetAllocation().width;
@@ -67,7 +67,7 @@ const sf::FloatRect Scrollbar::GetSliderRect() const {
 		slider_y = stepper_length + ( trough_length - slider_length ) * ( adjustment->GetValue() - adjustment->GetLower() ) / value_range;
 	}
 
-	return sf::FloatRect( slider_x, slider_y, GetAllocation().width, slider_length );
+	return sf::FloatRect({ slider_x, slider_y }, { GetAllocation().width, slider_length });
 }
 
 bool Scrollbar::IsDecreaseStepperPressed() const {
@@ -102,7 +102,7 @@ void Scrollbar::HandleMouseButtonEvent( sf::Mouse::Button button, bool press, in
 		slider_rect.left += GetAllocation().left;
 		slider_rect.top += GetAllocation().top;
 
-		if( slider_rect.contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+		if (slider_rect.contains({ static_cast<float>(x), static_cast<float>(y) })) {
 			m_dragging = true;
 
 			if( GetOrientation() == Orientation::HORIZONTAL ) {
@@ -120,10 +120,10 @@ void Scrollbar::HandleMouseButtonEvent( sf::Mouse::Button button, bool press, in
 		if( GetOrientation() == Orientation::HORIZONTAL ) {
 			auto stepper_length = GetAllocation().height;
 
-			sf::FloatRect decrease_stepper_rect( GetAllocation().left, GetAllocation().top, stepper_length, GetAllocation().height );
-			sf::FloatRect increase_stepper_rect( GetAllocation().left + GetAllocation().width - stepper_length, GetAllocation().top, stepper_length, GetAllocation().height );
+			sf::FloatRect decrease_stepper_rect({ GetAllocation().left, GetAllocation().top }, { stepper_length, GetAllocation().height });
+			sf::FloatRect increase_stepper_rect({ GetAllocation().left + GetAllocation().width - stepper_length, GetAllocation().top }, { stepper_length, GetAllocation().height });
 
-			if( decrease_stepper_rect.contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+			if (decrease_stepper_rect.contains({ static_cast<float>(x), static_cast<float>(y) })) {
 				m_decrease_pressed = true;
 				GetAdjustment()->Decrement();
 				m_elapsed_time = 0.f;
@@ -132,7 +132,7 @@ void Scrollbar::HandleMouseButtonEvent( sf::Mouse::Button button, bool press, in
 				return;
 			}
 
-			if( increase_stepper_rect.contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+			if (increase_stepper_rect.contains({ static_cast<float>(x), static_cast<float>(y) })) {
 				m_increase_pressed = true;
 				GetAdjustment()->Increment();
 				m_elapsed_time = 0.f;
@@ -144,10 +144,10 @@ void Scrollbar::HandleMouseButtonEvent( sf::Mouse::Button button, bool press, in
 		else {
 			auto stepper_length = GetAllocation().width;
 
-			sf::FloatRect decrease_stepper_rect( GetAllocation().left, GetAllocation().top, GetAllocation().width, stepper_length );
-			sf::FloatRect increase_stepper_rect( GetAllocation().left, GetAllocation().top + GetAllocation().height - stepper_length, GetAllocation().width, stepper_length );
+			sf::FloatRect decrease_stepper_rect({ GetAllocation().left, GetAllocation().top }, { GetAllocation().width, stepper_length });
+			sf::FloatRect increase_stepper_rect({ GetAllocation().left, GetAllocation().top + GetAllocation().height - stepper_length }, { GetAllocation().width, stepper_length });
 
-			if( decrease_stepper_rect.contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+			if (decrease_stepper_rect.contains({ static_cast<float>(x), static_cast<float>(y) })) {
 				m_decrease_pressed = true;
 				GetAdjustment()->Decrement();
 				m_elapsed_time = 0.f;
@@ -156,7 +156,7 @@ void Scrollbar::HandleMouseButtonEvent( sf::Mouse::Button button, bool press, in
 				return;
 			}
 
-			if( increase_stepper_rect.contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+			if (increase_stepper_rect.contains({ static_cast<float>(x), static_cast<float>(y) })) {
 				m_increase_pressed = true;
 				GetAdjustment()->Increment();
 				m_elapsed_time = 0.f;
@@ -170,7 +170,7 @@ void Scrollbar::HandleMouseButtonEvent( sf::Mouse::Button button, bool press, in
 		auto slider_center_y = slider_rect.top + slider_rect.height / 2.f;
 
 		if( GetOrientation() == Orientation::HORIZONTAL ) {
-			if( GetAllocation().contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+			if (GetAllocation().contains({ static_cast<float>(x), static_cast<float>(y) })) {
 				if( static_cast<float>( x ) < slider_center_x ) {
 					m_page_decreasing = x;
 					GetAdjustment()->DecrementPage();
@@ -190,7 +190,7 @@ void Scrollbar::HandleMouseButtonEvent( sf::Mouse::Button button, bool press, in
 			}
 		}
 		else {
-			if( GetAllocation().contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+			if (GetAllocation().contains({ static_cast<float>(x), static_cast<float>(y) })) {
 				if( static_cast<float>( y ) < slider_center_y ) {
 					m_page_decreasing = y;
 					GetAdjustment()->DecrementPage();
@@ -285,7 +285,7 @@ void Scrollbar::HandleUpdate( float seconds ) {
 	}
 
 	if( m_repeat_wait ) {
-		auto stepper_repeat_delay = Context::Get().GetEngine().GetProperty<sf::Uint32>( "StepperRepeatDelay", shared_from_this() );
+		auto stepper_repeat_delay = Context::Get().GetEngine().GetProperty<std::uint32_t>( "StepperRepeatDelay", shared_from_this() );
 
 		if( m_elapsed_time < (static_cast<float>( stepper_repeat_delay ) / 1000.f) ) {
 			return;

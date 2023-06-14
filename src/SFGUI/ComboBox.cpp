@@ -234,7 +234,7 @@ void ComboBox::HandleMouseMoveEvent( int x, int y ) {
 			scrollbar_allocation.left += GetAllocation().left;
 			scrollbar_allocation.top += GetAllocation().top;
 
-			if( scrollbar_allocation.contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+			if (scrollbar_allocation.contains({ static_cast<float>(x), static_cast<float>(y) })) {
 				m_highlighted_item = NONE;
 				Invalidate();
 
@@ -298,7 +298,7 @@ void ComboBox::HandleMouseButtonEvent( sf::Mouse::Button button, bool press, int
 			scrollbar_allocation.left += GetAllocation().left;
 			scrollbar_allocation.top += GetAllocation().top;
 
-			if( scrollbar_allocation.contains( static_cast<float>( x ), static_cast<float>( y ) ) ) {
+			if (scrollbar_allocation.contains({ static_cast<float>(x), static_cast<float>(y) })) {
 				return;
 			}
 		}

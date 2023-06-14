@@ -36,9 +36,9 @@ std::unique_ptr<RenderQueue> BREW::CreateEntryDrawable( std::shared_ptr<const En
 	);
 
 	auto line_height = GetFontLineHeight( *font, font_size );
-	sf::Text vis_label( entry->GetVisibleText(), *font, font_size );
+	sf::Text vis_label( *font, entry->GetVisibleText(), font_size );
 	vis_label.setFillColor( text_color );
-	vis_label.setPosition( text_padding, entry->GetAllocation().height / 2.f - line_height / 2.f );
+	vis_label.setPosition({ text_padding, entry->GetAllocation().height / 2.f - line_height / 2.f });
 
 	queue->Add( Renderer::Get().CreateText( vis_label ) );
 
@@ -55,10 +55,10 @@ std::unique_ptr<RenderQueue> BREW::CreateEntryDrawable( std::shared_ptr<const En
 		queue->Add(
 			Renderer::Get().CreateRect(
 				sf::FloatRect(
-					metrics.x + text_padding,
-					entry->GetAllocation().height / 2.f - line_height / 2.f,
-					cursor_thickness,
-					line_height
+					{ metrics.x + text_padding,
+					entry->GetAllocation().height / 2.f - line_height / 2.f },
+					{ cursor_thickness,
+					line_height }
 				),
 				cursor_color
 			)

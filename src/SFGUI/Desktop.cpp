@@ -105,7 +105,7 @@ void Desktop::Add( std::shared_ptr<Widget> widget ) {
 	// Get old focused widget out of State::PRELIGHT state if mouse is inside the new
 	// widget.
 	if( m_children.size() ) {
-		if( widget->GetAllocation().contains( static_cast<float>( m_last_mouse_pos.x ), static_cast<float>( m_last_mouse_pos.y ) ) ) {
+		if (widget->GetAllocation().contains({ static_cast<float>(m_last_mouse_pos.x), static_cast<float>(m_last_mouse_pos.y) })) {
 			SendFakeMouseMoveEvent( m_children.front() );
 		}
 	}
@@ -114,7 +114,7 @@ void Desktop::Add( std::shared_ptr<Widget> widget ) {
 
 	RecalculateWidgetLevels();
 
-	if( widget->GetAllocation().contains( static_cast<float>( m_last_mouse_pos.x ), static_cast<float>( m_last_mouse_pos.y ) ) ) {
+	if (widget->GetAllocation().contains({ static_cast<float>(m_last_mouse_pos.x), static_cast<float>(m_last_mouse_pos.y) })) {
 		SendFakeMouseMoveEvent( widget, m_last_mouse_pos.x, m_last_mouse_pos.y );
 	}
 
@@ -140,7 +140,7 @@ void Desktop::Remove( std::shared_ptr<Widget> widget ) {
 
 	RecalculateWidgetLevels();
 
-	if( !m_children.empty() &&  m_children.front()->GetAllocation().contains( static_cast<float>( m_last_mouse_pos.x ), static_cast<float>( m_last_mouse_pos.y ) ) ) {
+	if (!m_children.empty() && m_children.front()->GetAllocation().contains({ static_cast<float>(m_last_mouse_pos.x), static_cast<float>(m_last_mouse_pos.y) })) {
 		SendFakeMouseMoveEvent( m_children.front(), m_last_mouse_pos.x, m_last_mouse_pos.y );
 	}
 }
@@ -188,7 +188,7 @@ void Desktop::BringToFront( std::shared_ptr<const Widget> child ) {
 		return;
 	}
 
-	if( child->GetAllocation().contains( static_cast<float>( m_last_mouse_pos.x ), static_cast<float>( m_last_mouse_pos.y ) ) ) {
+	if (child->GetAllocation().contains({ static_cast<float>(m_last_mouse_pos.x), static_cast<float>(m_last_mouse_pos.y) })) {
 		SendFakeMouseMoveEvent( m_children.front() );
 	}
 
@@ -198,7 +198,7 @@ void Desktop::BringToFront( std::shared_ptr<const Widget> child ) {
 
 	RecalculateWidgetLevels();
 
-	if( child->GetAllocation().contains( static_cast<float>( m_last_mouse_pos.x ), static_cast<float>( m_last_mouse_pos.y ) ) ) {
+	if (child->GetAllocation().contains({ static_cast<float>(m_last_mouse_pos.x), static_cast<float>(m_last_mouse_pos.y) })) {
 		SendFakeMouseMoveEvent( ptr, m_last_mouse_pos.x, m_last_mouse_pos.y );
 	}
 }

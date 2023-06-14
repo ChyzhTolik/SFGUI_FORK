@@ -42,22 +42,22 @@ std::unique_ptr<RenderQueue> BREW::CreateButtonDrawable( std::shared_ptr<const B
 		auto metrics = GetTextStringMetrics( button->GetLabel(), *font, font_size );
 		metrics.y = GetFontLineHeight( *font, font_size );
 
-		sf::Text text( button->GetLabel(), *font, font_size );
+		sf::Text text( *font, button->GetLabel(), font_size );
 		auto offset = ( button->GetState() == Button::State::ACTIVE ) ? border_width : 0.f;
 		sfg::Widget::PtrConst child( button->GetChild() );
 
 		if( !child ) {
 			text.setPosition(
-				button->GetAllocation().width / 2.f - metrics.x / 2.f + offset,
-				button->GetAllocation().height / 2.f - metrics.y / 2.f + offset
+				{ button->GetAllocation().width / 2.f - metrics.x / 2.f + offset,
+				button->GetAllocation().height / 2.f - metrics.y / 2.f + offset }
 			);
 		}
 		else {
 			float width( button->GetAllocation().width - spacing - child->GetAllocation().width );
 
 			text.setPosition(
-				child->GetAllocation().width + spacing + (width / 2.f - metrics.x / 2.f) + offset,
-				button->GetAllocation().height / 2.f - metrics.y / 2.f + offset
+				{ child->GetAllocation().width + spacing + (width / 2.f - metrics.x / 2.f) + offset,
+				button->GetAllocation().height / 2.f - metrics.y / 2.f + offset }
 			);
 		}
 

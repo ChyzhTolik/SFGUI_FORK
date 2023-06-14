@@ -8,7 +8,7 @@ set( SFGUI_VERSION ${SFGUI_MAJOR_VERSION}.${SFGUI_MINOR_VERSION}.${SFGUI_REVISIO
 project( SFGUI LANGUAGES CXX VERSION ${SFGUI_VERSION} )
 set(TARGET SFGUI)
 
-set( CMAKE_CXX_STANDARD 11 )
+set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 set( CMAKE_CXX_EXTENSIONS OFF )
 
@@ -60,7 +60,26 @@ if( SFGUI_INCLUDE_FONT )
 	target_compile_definitions( ${TARGET} PRIVATE SFGUI_INCLUDE_FONT )
 endif()
 
-target_link_libraries( ${TARGET} PUBLIC sfml-graphics sfml-window sfml-system ${OPENGL_gl_LIBRARY} )
+set(SFML_LIBS ${CMAKE_BINARY_DIR}/libraries/SFML/lib)
+set(SFML_INCLUDE ${CMAKE_SOURCE_DIR}/libraries/SFML/include)
+
+message(3333-  ${SFML_INCLUDE})
+target_include_directories( ${TARGET} PRIVATE ${SFML_INCLUDE} )
+
+if(UNIX)
+
+	target_link_libraries( ${TARGET} PUBLIC 
+		${SFML_LIBS}/libsfml-graphics-d.so.3.0.0
+		${SFML_LIBS}/libsfml-window-d.so.3.0.0
+		${SFML_LIBS}/libsfml-system-d.so.3.0.0
+		${OPENGL_gl_LIBRARY} 
+	)	
+endif(UNIX)
+
+if(NOT UNIX)
+	target_link_libraries( ${TARGET} PUBLIC sfml-graphics sfml-window sfml-system ${OPENGL_gl_LIBRARY} )
+endif(NOT UNIX)
+
 
 # Tell the compiler to export when necessary.
 set_target_properties( ${TARGET} PROPERTIES DEFINE_SYMBOL SFGUI_EXPORTS )
@@ -138,7 +157,7 @@ endif()
 ### EXAMPLES ###
 
 if( SFGUI_BUILD_EXAMPLES )
-	add_subdirectory( "examples" )
+	# add_subdirectory( "examples" )
 endif()
 
 ### DOCUMENTATION ###

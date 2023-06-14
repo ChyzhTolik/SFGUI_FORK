@@ -179,10 +179,10 @@ void Widget::RequestResize() {
 	}
 	else {
 		sf::FloatRect allocation(
-			GetAllocation().left,
-			GetAllocation().top,
-			std::max( GetAllocation().width, m_requisition.x ),
-			std::max( GetAllocation().height, m_requisition.y )
+			{ GetAllocation().left,
+			GetAllocation().top },
+			{ std::max(GetAllocation().width, m_requisition.x),
+			std::max(GetAllocation().height, m_requisition.y) }
 		);
 
 		SetAllocation( allocation );
@@ -343,7 +343,7 @@ void Widget::HandleEvent( const sf::Event& event ) {
 
 			case sf::Event::MouseMoved:
 				// Check if pointer inside of widget's allocation.
-				if( GetAllocation().contains( static_cast<float>( event.mouseMove.x ), static_cast<float>( event.mouseMove.y ) ) ) {
+				if (GetAllocation().contains({ static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y) })) {
 					// Check for enter event.
 					if( !IsMouseInWidget() ) {
 						SetMouseInWidget( true );
@@ -764,7 +764,7 @@ void Widget::HandleStateChange( State /*old_state*/ ) {
 	Invalidate();
 }
 
-void Widget::HandleTextEvent( sf::Uint32 /*character*/ ) {
+void Widget::HandleTextEvent(std::uint32_t /*character*/ ) {
 }
 
 void Widget::HandleMouseEnter( int /*x*/, int /*y*/ ) {

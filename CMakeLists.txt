@@ -66,7 +66,6 @@ set(SFML_INCLUDE ${CMAKE_SOURCE_DIR}/libraries/SFML/include)
 target_include_directories( ${TARGET} PRIVATE ${SFML_INCLUDE} )
 
 if(UNIX)
-
 	target_link_libraries( ${TARGET} PUBLIC 
 		${SFML_LIBS}/libsfml-graphics-d.so.3.0.0
 		${SFML_LIBS}/libsfml-window-d.so.3.0.0
@@ -74,6 +73,14 @@ if(UNIX)
 		${OPENGL_gl_LIBRARY} 
 	)	
 endif(UNIX)
+if(WIN32)
+	target_link_libraries( ${TARGET} PUBLIC 
+		${SFML_LIBS}/sfml-graphics-d.lib
+		${SFML_LIBS}/sfml-system-d.lib
+		${SFML_LIBS}/sfml-window-d.lib
+		${OPENGL_gl_LIBRARY} 
+	)	
+endif(WIN32)
 
 if(NOT UNIX)
 	target_link_libraries( ${TARGET} PUBLIC sfml-graphics sfml-window sfml-system ${OPENGL_gl_LIBRARY} )

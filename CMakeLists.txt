@@ -63,7 +63,6 @@ endif()
 set(SFML_LIBS ${CMAKE_BINARY_DIR}/libraries/SFML/lib)
 set(SFML_INCLUDE ${CMAKE_SOURCE_DIR}/libraries/SFML/include)
 
-message(3333-  ${SFML_INCLUDE})
 target_include_directories( ${TARGET} PRIVATE ${SFML_INCLUDE} )
 
 if(UNIX)

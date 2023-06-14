@@ -585,6 +585,7 @@ PrimitiveTexture::Ptr Renderer::LoadTexture( const sf::Image& image ) {
 	// texture filtering from screwing up our images.
 	// If 1 pixel isn't enough, increase.
 	const static auto padding = 1;
+	bool success = false;
 
 	auto required_vertical_size = static_cast<int>( image.getSize().y ) + padding;
 	auto required_horizontal_size = static_cast<int>( image.getSize().x );
@@ -643,10 +644,27 @@ PrimitiveTexture::Ptr Renderer::LoadTexture( const sf::Image& image ) {
 			auto old_image = current_page->copyToImage();
 
 			new_image.create({ old_image.getSize().x, static_cast<unsigned int>(max_texture_size) }, sf::Color::White);
-			new_image.copy(old_image, { 0u, 0u });
-			new_image.copy(image, { 0u, static_cast<unsigned int>(current_page_last_occupied_location) });
+			
+			success = new_image.copy(old_image, { 0u, 0u });
 
-			current_page->loadFromImage( new_image );
+			if (!success )
+			{
+				return nullptr;
+			}			
+
+			success = new_image.copy(image, { 0u, static_cast<unsigned int>(current_page_last_occupied_location) });
+
+			if (!success )
+			{
+				return nullptr;
+			}
+
+			success = current_page->loadFromImage( new_image );
+
+			if (!success )
+			{
+				return nullptr;
+			}
 		}
 
 		// Insert the new page.
@@ -665,10 +683,10 @@ PrimitiveTexture::Ptr Renderer::LoadTexture( const sf::Image& image ) {
 		auto old_image = current_page->copyToImage();
 
 		new_image.create({ static_cast<unsigned int>(std::max(current_page_size_x, required_horizontal_size)), static_cast<unsigned int>(std::max(current_page_size_y, current_page_last_occupied_location + required_vertical_size)) }, sf::Color::White);
-		new_image.copy(old_image, { 0u, 0u });
-		new_image.copy(image, { 0u, static_cast<unsigned int>(current_page_last_occupied_location) });
+		success = new_image.copy(old_image, { 0u, 0u });
+		success = new_image.copy(image, { 0u, static_cast<unsigned int>(current_page_last_occupied_location) });
 
-		current_page->loadFromImage( new_image );
+		success = current_page->loadFromImage( new_image );
 	}
 	else {
 		// Image is loaded into atlas.
